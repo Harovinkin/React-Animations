@@ -1,15 +1,31 @@
 import React, {useState} from "react";
 import { CSSTransition, Transition } from "react-transition-group";
+import List from "./List";
 
 
 function App() {
 const [toggle, setToggle] = useState(true)
 const [toggle2, setToggle2] = useState(true)
+const [items, setItems] = useState([
+  {id: 1, title: 'Item 1'},
+  {id: 2, title: 'Item 2'},
+  {id: 3, title: 'Item 3'},
+])
+
+const removeItem = id => setItems(items.filter(item => item.id !== id))
+
+const addItem = () => {
+  const title = prompt('Input name Item');
+  const id = Date.now();
+
+  setItems(items.concat({id, title}))
+}
 
   return (
     <div className="container">
       <button onClick={() => setToggle(!toggle)}>Toggle</button>
       <button onClick={() => setToggle2(!toggle2)}>Toggle2</button>
+      <button onClick={() => addItem()}>Add Item</button>
       <hr/>
       <div className={'blocks'}>
       <Transition
@@ -41,8 +57,15 @@ const [toggle2, setToggle2] = useState(true)
         </div>
       </CSSTransition>
       </div>
+
+      <div className='blocks'>
+        <List 
+          items={items}
+          onRemove={removeItem}
+        />
+      </div>
     </div>
   );
-}
+} 
 
 export default App;
